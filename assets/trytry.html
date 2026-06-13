@@ -5,9 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/all.css">
-    <link rel="stylesheet" href="css/style.css">
-    
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <style>
+        /* ── HOME ANIMATIONS ── */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeSlideRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .animate-text {
+            animation: fadeSlideUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .animate-text:nth-child(1) { animation-delay: 0.1s; }
+        .animate-text:nth-child(2) { animation-delay: 0.3s; }
+        .animate-text:nth-child(3) { animation-delay: 0.5s; }
+        .animate-text:nth-child(4) { animation-delay: 0.7s; }
+        .animate-text:nth-child(5) { animation-delay: 0.9s; }
+
+        .animate-img {
+            animation: fadeSlideRight 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .profile-glow {
+            padding: 5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dc2626, #ff6b6b, #dc2626);
+            background-size: 200% 200%;
+            animation: gradientRotate 3s ease infinite, glowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes gradientRotate {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 15px 3px rgba(220, 38, 38, 0.4); }
+            50%       { box-shadow: 0 0 30px 8px rgba(220, 38, 38, 0.7); }
+        }
+
+        .profile-glow img {
+            display: block;
+            border: 4px solid white;
+            border-radius: 50%;
+        }
+
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.8s step-end infinite;
+            color: #dc2626;
+            font-weight: 100;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+
+        /* ── SCROLL FADE IN (shared) ── */
+        .scroll-fade {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .scroll-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-fade-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .scroll-fade-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* stagger delays for children */
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+
+        /* ── SKILL BAR ANIMATION ── */
+        .progress-bar {
+            width: 0% !important;
+            transition: width 1.2s ease;
+        }
+
+        .progress-bar.animated {
+            width: var(--target-width) !important;
+        }
+
+        /* ── PORTFOLIO HOVER ── */
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .portfolio-item img {
+            transition: transform 0.4s ease;
+            display: block;
+            width: 100%;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.07);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(220, 38, 38, 0.82);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 8px;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-overlay h3 {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .portfolio-overlay p {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -37,10 +189,10 @@
     <!--Home Section Start-->
     <section class="Home py-5" id="home">
         <div class="container-lg">
-            <div class="row align-items-center align-content-center" style="min-height: 80vh">
+            <div class="row min-vh-100 align-items-center align-content-center">
 
                 <div class="col-md-6 mt-5 mt-md-0 animate-img">
-                    <div class="profile-glow mx-auto">
+                    <div class="profile-glow mx-auto" style="max-width: 400px;">
                         <img src="img/profile.png" alt="Profile Picture" class="img-fluid rounded-circle w-100">
                     </div>
                 </div>
@@ -154,64 +306,37 @@
         <div class="container-lg py-4">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="section-title text-center">
+                    <div class="section-title text-center scroll-fade">
                         <h2 class="fw-bold mb-5">My Skills</h2>
                     </div>
                 </div>
             </div>
             <div class="row text-center">
-                <div class="col-md-6 col-lg-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4 scroll-fade stagger-1">
                     <div class="service-item shadow-sm p-4 rounded bg-white">
                         <div class="icon my-3 text-danger fs-2">
                             <i class="fas fa-code"></i>
                         </div>
                         <h3 class="fs-5 py-2">Web Development</h3>
-                        <p class="text-muted">Experienced with using HTML5, CSS3, JavaScript and Bootstrap</p>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4 scroll-fade stagger-2">
                     <div class="service-item shadow-sm p-4 rounded bg-white">
                         <div class="icon my-3 text-danger fs-2">
-                            <i class="fab fa-python"></i>
+                            <i class="fas fa-lightbulb"></i>
                         </div>
-                        <h3 class="fs-5 py-2">Python</h3>
-                        <p class="text-muted">Game Development, Artificial Intelligence and Machine Learning </p>
+                        <h3 class="fs-5 py-2">Pygame</h3>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="service-item shadow-sm p-4 rounded bg-white">
-                        <div class="icon my-3 text-danger fs-2">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h3 class="fs-5 py-2">MySQL</h3>
-                        <p class="text-muted">SQL proficiency, Database Architecture and Modelling</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="service-item shadow-sm p-4 rounded bg-white">
-                        <div class="icon my-3 text-danger fs-2">
-                            <i class="fab fa-git-alt"></i>
-                        </div>
-                        <h3 class="fs-5 py-2">Git and GitHub</h3>
-                        <p class="text-muted">Version control, collaboration and repository management</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4 scroll-fade stagger-3">
                     <div class="service-item shadow-sm p-4 rounded bg-white">
                         <div class="icon my-3 text-danger fs-2">
                             <i class="fas fa-image"></i>
                         </div>
                         <h3 class="fs-5 py-2">Photoshop</h3>
-                        <p class="text-muted">Layer Blending, Retouching, Masking and Typography</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="service-item shadow-sm p-4 rounded bg-white">
-                        <div class="icon my-3 text-danger fs-2">
-                            <i class="fa-solid fa-network-wired"></i>
-                        </div>
-                        <h3 class="fs-5 py-2">Networking</h3>
-                        <p class="text-muted">Routing and Switching, Subnetting, IP addressing and Network Architecture</p>
+                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     </div>
                 </div>
             </div>
@@ -333,6 +458,62 @@
     <!--Contact Section End-->
 
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/script.js"></script>
+    <script>
+        // ── SCROLL OBSERVER ──
+        const scrollElements = document.querySelectorAll('.scroll-fade, .scroll-fade-left');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        scrollElements.forEach(el => observer.observe(el));
+
+        // ── SKILL BAR FILL ──
+        const progressBars = document.querySelectorAll('.progress-bar');
+
+        const barObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    barObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        progressBars.forEach(bar => barObserver.observe(bar));
+
+        // ── COUNTER ANIMATION ──
+        const counters = document.querySelectorAll('.counter');
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = +entry.target.getAttribute('data-target');
+                    const suffix = entry.target.closest('.fact-item')
+                        .querySelector('p').textContent.includes('Technologies') ? '+' :
+                        entry.target.closest('.fact-item')
+                        .querySelector('p').textContent.includes('Skills') ? '+' : '';
+                    let count = 0;
+                    const step = Math.ceil(target / 30);
+                    const interval = setInterval(() => {
+                        count += step;
+                        if (count >= target) {
+                            entry.target.textContent = target + suffix;
+                            clearInterval(interval);
+                        } else {
+                            entry.target.textContent = count + suffix;
+                        }
+                    }, 40);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+    </script>
 </body>
 </html>
